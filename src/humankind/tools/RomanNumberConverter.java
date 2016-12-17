@@ -1,5 +1,6 @@
 package humankind.tools;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,19 +17,23 @@ public class RomanNumberConverter {
 		}
 	};
 
-	public Integer convert(String romanLiteral) {
+	public Integer convert(String romanLiteral) throws ParseException {
 		int length = romanLiteral.length();
 		if (romanLiteral == null || length == 0)
 			return 0;
 		if (length == 1)
 			return ROMAN_2_DECIMAL.get(romanLiteral);
 
+		return convertString(romanLiteral);
+	}
+
+	private Integer convertString(String romanLiteral) throws ParseException {
+		int length = romanLiteral.length();
 		int accumulator = 0;
 		int i = 0;
-		while (i < romanLiteral.length()) {
+		while (i < length) {
 			int current = ROMAN_2_DECIMAL.get(String.valueOf(romanLiteral.charAt(i)));
-			i++;
-			int next = (i < romanLiteral.length()) ? ROMAN_2_DECIMAL.get(String.valueOf(romanLiteral.charAt(i))) : 0;
+			int next = lookahead(romanLiteral, ++i, current);
 			if (next > current) {
 				accumulator += next - current;
 				i++;
@@ -37,5 +42,27 @@ public class RomanNumberConverter {
 			}
 		}
 		return accumulator;
+	}
+
+	private int lookahead(String romanLiteral, int index, int current) throws ParseException {
+		int next = 0;
+		if (index < romanLiteral.length()) {
+			next = ROMAN_2_DECIMAL.get(String.valueOf(romanLiteral.charAt(index)));
+			if (isSequenceInvalid(current, next))
+				throw new ParseException(romanLiteral, index);
+		}
+		return next;
+	}
+
+	private boolean isSequenceInvalid(int current, int next) {
+		return next > current && (notAllowedToBeSubtracted(current) || notAllowedToBeSubtractedFrom(next, current));
+	}
+
+	private boolean notAllowedToBeSubtractedFrom(int next, int current) {
+		return (next - current) / current > 10;
+	}
+
+	private boolean notAllowedToBeSubtracted(int current) {
+		return current == 5 || current == 50 || current == 500;
 	}
 }

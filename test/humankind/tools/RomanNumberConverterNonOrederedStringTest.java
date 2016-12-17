@@ -1,5 +1,7 @@
 package humankind.tools;
 
+import java.text.ParseException;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +24,7 @@ public class RomanNumberConverterNonOrederedStringTest {
 	public Integer decimalNumber;
 	
 	@Test
-	public void shouldConvertLiteralToCorrectDecimal() {
+	public void shouldConvertLiteralToCorrectDecimal() throws ParseException {
 		Assert.assertEquals(decimalNumber, new RomanNumberConverter().convert(romanLiteral));
 	}
 }
