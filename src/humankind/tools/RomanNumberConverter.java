@@ -22,7 +22,7 @@ public class RomanNumberConverter {
 		if (romanLiteral == null || length == 0)
 			return 0;
 		if (length == 1)
-			return ROMAN_2_DECIMAL.get(romanLiteral);
+			return getValueAt(romanLiteral, 0);
 
 		return convertString(romanLiteral);
 	}
@@ -32,7 +32,7 @@ public class RomanNumberConverter {
 		int accumulator = 0;
 		int i = 0;
 		while (i < length) {
-			int current = ROMAN_2_DECIMAL.get(String.valueOf(romanLiteral.charAt(i)));
+			int current = getValueAt(romanLiteral, i);
 			int next = lookahead(romanLiteral, ++i, current);
 			if (next > current) {
 				accumulator += next - current;
@@ -40,6 +40,7 @@ public class RomanNumberConverter {
 			} else if (next == current) {
 				if (notAllowedToBeRepeated(current))
 					throw new ParseException(romanLiteral, i);
+				
 				int next2Steps = lookahead(romanLiteral, ++i, current);
 				int next3Steps = lookahead(romanLiteral, ++i, current);
 				if (isSequenceTooLong(current, next2Steps, next3Steps))
@@ -54,14 +55,10 @@ public class RomanNumberConverter {
 		return accumulator;
 	}
 
-	private void validateRepeatingSequence(String romanLiteral, int index, int current) throws ParseException {
-
-	}
-
 	private int lookahead(String romanLiteral, int index, int current) throws ParseException {
 		int next = 0;
 		if (index < romanLiteral.length()) {
-			next = ROMAN_2_DECIMAL.get(String.valueOf(romanLiteral.charAt(index)));
+			next = getValueAt(romanLiteral, index);
 			if (isPairInvalid(current, next))
 				throw new ParseException(romanLiteral, index);
 		}
@@ -86,5 +83,16 @@ public class RomanNumberConverter {
 
 	private boolean notAllowedToBeRepeated(int current) {
 		return !(current == 1 || current % 10 == 0);
+	}
+
+	private Integer getValueAt(String romanLiteral, int index) throws ParseException {
+		Integer result = null;
+		try {
+			result = ROMAN_2_DECIMAL.get(String.valueOf(romanLiteral.charAt(index)));
+		} finally {
+			if (result == null)
+				throw new ParseException(romanLiteral, index);
+		}
+		return result;
 	}
 }
