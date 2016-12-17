@@ -84,7 +84,7 @@ public class RomanNumberConverter {
 	}
 
 	private boolean isSequenceTooLong(int current, int next2Steps, int next3Steps) {
-		return current == next2Steps && current == next3Steps;
+		return current == next2Steps && current == next3Steps && next2Steps != 0 && next3Steps != 0;
 	}
 
 	private boolean notAllowedToBeRepeated(int current) {

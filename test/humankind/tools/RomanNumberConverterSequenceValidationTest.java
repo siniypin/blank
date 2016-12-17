@@ -16,7 +16,7 @@ public class RomanNumberConverterSequenceValidationTest {
 		return new Object[][] { { "VX", true }, { "LC", true }, { "DM", true }, { "IL", true }, { "IC", true },
 				{ "ID", true }, { "IM", true }, { "XD", true }, { "XM", true }, { "CD", false }, { "VV", true },
 				{ "XXXX", true }, { "III", false }, { "XXU", true }, { "U", true }, { "IIV", true }, { "XXXIX", false },
-				{ "IXXXX", true } };
+				{ "IXXXX", true }, { "IXX", false } };
 	}
 
 	private boolean ThrowsParseException(RomanNumberConverter sut) {
