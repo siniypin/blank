@@ -1,6 +1,7 @@
 package humankind.tools;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RomanNumberConverter {
 	private static Map<String, Integer> romanToDecimal = new HashMap<String, Integer>() {
@@ -16,6 +17,6 @@ public class RomanNumberConverter {
 	};
 
 	public Integer convert(String romanLiteral) {
-		return romanToDecimal.get(romanLiteral);
+		return romanLiteral.chars().map(c -> romanToDecimal.get(String.valueOf((char)c))).sum();
 	}
 }
