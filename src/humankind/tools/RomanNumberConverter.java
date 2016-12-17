@@ -37,6 +37,16 @@ public class RomanNumberConverter {
 			if (next > current) {
 				accumulator += next - current;
 				i++;
+			} else if (next == current) {
+				if (notAllowedToBeRepeated(current))
+					throw new ParseException(romanLiteral, i);
+				int next2Steps = lookahead(romanLiteral, ++i, current);
+				int next3Steps = lookahead(romanLiteral, ++i, current);
+				if (isSequenceTooLong(current, next2Steps, next3Steps))
+					throw new ParseException(romanLiteral, i);
+				else {
+					accumulator += next + next2Steps + next3Steps;
+				}
 			} else {
 				accumulator += current;
 			}
@@ -44,25 +54,37 @@ public class RomanNumberConverter {
 		return accumulator;
 	}
 
+	private void validateRepeatingSequence(String romanLiteral, int index, int current) throws ParseException {
+
+	}
+
 	private int lookahead(String romanLiteral, int index, int current) throws ParseException {
 		int next = 0;
 		if (index < romanLiteral.length()) {
 			next = ROMAN_2_DECIMAL.get(String.valueOf(romanLiteral.charAt(index)));
-			if (isSequenceInvalid(current, next))
+			if (isPairInvalid(current, next))
 				throw new ParseException(romanLiteral, index);
 		}
 		return next;
 	}
 
-	private boolean isSequenceInvalid(int current, int next) {
+	private boolean isPairInvalid(int current, int next) {
 		return next > current && (notAllowedToBeSubtracted(current) || notAllowedToBeSubtractedFrom(next, current));
+	}
+
+	private boolean notAllowedToBeSubtracted(int current) {
+		return current == 5 || current == 50 || current == 500;
 	}
 
 	private boolean notAllowedToBeSubtractedFrom(int next, int current) {
 		return (next - current) / current > 10;
 	}
 
-	private boolean notAllowedToBeSubtracted(int current) {
-		return current == 5 || current == 50 || current == 500;
+	private boolean isSequenceTooLong(int current, int next2Steps, int next3Steps) {
+		return current == next2Steps && current == next3Steps;
+	}
+
+	private boolean notAllowedToBeRepeated(int current) {
+		return !(current == 1 || current % 10 == 0);
 	}
 }
