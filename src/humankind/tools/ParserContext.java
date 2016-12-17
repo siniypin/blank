@@ -8,7 +8,8 @@ import java.util.*;
 public class ParserContext {
 	private BufferedReader inputReader;
 	private OutputStreamWriter outputWriter;
-	private HashMap<String, String> vocabulary = new HashMap<String, String>();
+	private HashMap<String, String> vocabulary = new HashMap<>();
+	private HashMap<String, Integer> creditsPerUnit = new HashMap<>();
 
 	public ParserContext(BufferedReader inputReader, OutputStreamWriter output) {
 		this.inputReader = inputReader;
@@ -32,5 +33,9 @@ public class ParserContext {
 
 	public Map<String, String> getVocabulary() {
 		return vocabulary;
+	}
+
+	public Map<String, Integer> getPricesPerUnit() {
+		return creditsPerUnit;
 	}
 }
