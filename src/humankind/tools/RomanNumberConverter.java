@@ -1,8 +1,7 @@
 package humankind.tools;
 
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class RomanNumberConverter {
 	private static Map<String, Integer> ROMAN_2_DECIMAL = new HashMap<String, Integer>() {
@@ -34,22 +33,25 @@ public class RomanNumberConverter {
 		while (i < length) {
 			int current = getValueAt(romanLiteral, i);
 			int next = lookahead(romanLiteral, ++i, current);
-			if (subtractsTwice(current, next)) {
-				accumulator += next - current;
-				i++;
-			} else if (next == current) {
-				if (notAllowedToBeRepeated(current))
+			if (next < current) {
+				accumulator += current;
+			} else {
+				accumulator += (next > current) ? next - current : current + next;
+				if (current == next && notAllowedToBeRepeated(current))
 					throw new ParseException(romanLiteral, i);
 
 				int next2Steps = lookahead(romanLiteral, ++i, current);
-				if (subtractsTwice(current, next2Steps))
+				if (current == next && subtractsTwice(current, next2Steps))
 					throw new ParseException(romanLiteral, i);
 				int next3Steps = lookahead(romanLiteral, ++i, current);
 				if (isSequenceTooLong(current, next2Steps, next3Steps))
 					throw new ParseException(romanLiteral, i);
-				accumulator += next + next2Steps + next3Steps;
-			} else {
-				accumulator += current;
+				accumulator += next2Steps + next3Steps;
+				int next4Steps = lookahead(romanLiteral, ++i, current);
+				if (isSequenceTooLong(next, next3Steps, next4Steps))
+					throw new ParseException(romanLiteral, i);
+				accumulator += next4Steps;
+				i++;
 			}
 		}
 		return accumulator;
@@ -66,8 +68,7 @@ public class RomanNumberConverter {
 	}
 
 	private boolean isPairInvalid(int current, int next) {
-		return subtractsTwice(current, next)
-				&& (notAllowedToBeSubtracted(current) || notAllowedToBeSubtractedFrom(next, current));
+		return next > current && (notAllowedToBeSubtracted(current) || notAllowedToBeSubtractedFrom(next, current));
 	}
 
 	private boolean notAllowedToBeSubtracted(int current) {

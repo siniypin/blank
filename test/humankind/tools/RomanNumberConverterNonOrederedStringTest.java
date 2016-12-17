@@ -13,8 +13,8 @@ import org.junit.runners.Parameterized.Parameters;
 public class RomanNumberConverterNonOrederedStringTest {
 	@Parameters
 	public static Object[][] data() {
-		return new Object[][] { { "IV", 5 - 1 }, { "IX", 10 - 1 },
-				{ "XL", 50 - 10 }, { "XC", 100 - 10 }, {"CD", 500 - 100}, {"CM", 1000 - 100} };
+		return new Object[][] { { "IV", 5 - 1 }, { "IX", 10 - 1 }, { "XL", 50 - 10 }, { "XC", 100 - 10 },
+				{ "CD", 500 - 100 }, { "CM", 1000 - 100 }, { "IXXX", (10 - 1) + 10 + 10 } };
 	}
 
 	@Parameter(0)
@@ -22,7 +22,7 @@ public class RomanNumberConverterNonOrederedStringTest {
 
 	@Parameter(1)
 	public Integer decimalNumber;
-	
+
 	@Test
 	public void shouldConvertLiteralToCorrectDecimal() throws ParseException {
 		Assert.assertEquals(decimalNumber, new RomanNumberConverter().convert(romanLiteral));
