@@ -1,33 +1,35 @@
 package humankind.tools;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
+import java.text.ParseException;
+import java.io.*;
 import java.util.*;
 
-public class ParserContext {
+public class TransactionContext {
 	private BufferedReader inputReader;
-	private OutputStreamWriter outputWriter;
+	private PrintWriter outputWriter;
 	private HashMap<String, String> vocabulary = new HashMap<>();
 	private HashMap<String, Integer> creditsPerUnit = new HashMap<>();
 
-	public ParserContext(BufferedReader inputReader, OutputStreamWriter output) {
+	public TransactionContext(BufferedReader inputReader, BufferedWriter output) {
 		this.inputReader = inputReader;
-		this.outputWriter = output;
+		this.outputWriter = new PrintWriter(output);
 	}
 
-	public void processInput() {
+	public void processInput(TransactionParser parser) {
 		try {
 			String line = inputReader.readLine();
 			while (!line.isEmpty()) {
+				try {
+					parser.parseTransaction(line);
+				} catch (ParseException e) {
+					
+				}
 				line = inputReader.readLine();
 			}
 		} catch (IOException ex) {
-			try {
-				outputWriter.write("SNAP! can not read input data, tearing down.\n");
-				outputWriter.flush();
-			} catch (IOException e) {
-			}
+			outputWriter.println("SNAP! can not read input data, tearing down.\n");
 		}
 	}
 

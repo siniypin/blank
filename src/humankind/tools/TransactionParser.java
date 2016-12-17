@@ -3,14 +3,14 @@ package humankind.tools;
 import java.text.ParseException;
 
 public class TransactionParser {
-	private ParserContext context;
+	private TransactionContext context;
 	private RomanNumberConverter romanNumberConverter = new RomanNumberConverter();
 
-	public TransactionParser(ParserContext parserContext) {
+	public TransactionParser(TransactionContext parserContext) {
 		this.context = parserContext;
 	}
 
-	public ParserContext getParserContext() {
+	public TransactionContext getParserContext() {
 		return context;
 	}
 

@@ -1,7 +1,6 @@
 package humankind.tools;
 
-import java.io.BufferedReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.text.ParseException;
 
 import org.junit.*;
@@ -14,12 +13,12 @@ public class TransactionParserTest {
 	@Mock
 	private BufferedReader in;
 	@Mock
-	private OutputStreamWriter out;
+	private BufferedWriter out;
 
 	@Test
 	public void shouldParseVocabularyTx() throws ParseException {
 		// arrange
-		TransactionParser sut = new TransactionParser(new ParserContext(in, out));
+		TransactionParser sut = new TransactionParser(new TransactionContext(in, out));
 
 		// act
 		sut.parseTransaction("glob is I");
@@ -31,7 +30,7 @@ public class TransactionParserTest {
 	@Test
 	public void shouldParseVocabularyTx2() throws ParseException {
 		// arrange
-		TransactionParser sut = new TransactionParser(new ParserContext(in, out));
+		TransactionParser sut = new TransactionParser(new TransactionContext(in, out));
 
 		// act
 		sut.parseTransaction("prok is V");
@@ -43,10 +42,9 @@ public class TransactionParserTest {
 	@Test
 	public void shouldParsePriceTx() throws ParseException {
 		// arrange
-		ParserContext context = new ParserContext(in, out);
+		TransactionContext context = new TransactionContext(in, out);
 		context.getVocabulary().put("glob", "I");
 		TransactionParser sut = new TransactionParser(context);
-		
 
 		// act
 		sut.parseTransaction("glob glob Silver is 34 Credits");

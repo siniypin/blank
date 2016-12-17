@@ -2,9 +2,7 @@ package humankind.tools;
 
 import static org.mockito.Mockito.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +11,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ParserContextTest {
+public class TransactionContextTest {
 	@Mock
 	private BufferedReader in;
 	@Mock
-	private OutputStreamWriter out;
+	private BufferedWriter out;
+	@Mock
+	private TransactionParser parser;
 
 	@Before
 	public void initInMock() throws IOException {
@@ -27,10 +27,10 @@ public class ParserContextTest {
 	@Test
 	public void shouldIterateThroughInputStreamLines() throws IOException {
 		// arrange
-		ParserContext sut = new ParserContext(in, out);
+		TransactionContext sut = new TransactionContext(in, out);
 
 		// act
-		sut.processInput();
+		sut.processInput(parser);
 
 		// assert
 		verify(in, times(3)).readLine();
