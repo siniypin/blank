@@ -1,12 +1,9 @@
 package humankind.tools;
 
-import static org.mockito.Mockito.*;
-
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.OutputStreamWriter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -15,21 +12,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class TransactionParserTest {
 	@Mock
 	private BufferedReader in;
-
-	@Before
-	public void initInMock() throws IOException {
-		when(in.readLine()).thenReturn("lala", "lala", "");
-	}
-
+	@Mock
+	private OutputStreamWriter out;
+	
 	@Test
-	public void shouldIterateThroughInputStreamLines() throws IOException {
-		// arrange
-		TransactionParser sut = new TransactionParser(in);
-
-		// act
-		sut.processInput();
-
-		// assert
-		verify(in, times(3)).readLine();
+	public void shouldParseVocabularyTx(){
+		//arrange
+		TransactionParser sut = new TransactionParser(new ParserContext(in, out));
+		
+		//act
+		sut.parseTransaction("glob is I");
+		
+		//assert
+		Assert.assertEquals("I", sut.getParserContext().getVocabulary().get("glob"));
 	}
 }

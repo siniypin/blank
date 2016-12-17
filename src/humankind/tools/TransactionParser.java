@@ -1,18 +1,17 @@
 package humankind.tools;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 public class TransactionParser {
-	private BufferedReader inputReader;
+	private ParserContext context;
 
-	public TransactionParser(BufferedReader inputReader) {
-		this.inputReader = inputReader;
+	public TransactionParser(ParserContext parserContext) {
+		this.context = parserContext;
 	}
 
-	public void processInput() throws IOException {
-		while (inputReader.readLine() != "") {
+	public ParserContext getParserContext() {
+		return context;
+	}
 
-		}
+	public void parseTransaction(String txString) {
+		context.getVocabulary().put("glob", "I");
 	}
 }
