@@ -23,7 +23,9 @@
   - [ ] They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX.
   - [ ] "D", "L", and "V" can never be repeated.
   - [ ] Only one small-value symbol may be subtracted from any large-value symbol.
-- [ ] map intergalactic currency to roman
-- [ ] set goods price in credits
 - [ ] parse input
+  - [ ] map intergalactic currency to roman -> glob is I (grammar)
+  - [ ] set goods price in credits -> glob glob Silver is 34 Credits
 - [ ] calculate answers
+  - [ ] how much
+  - [ ] how many
