@@ -15,13 +15,18 @@ public class TransactionContextTest {
 	@Mock
 	private BufferedReader in;
 	@Mock
-	private BufferedWriter out;
+	private PrintWriter out;
 	@Mock
 	private TransactionParser parser;
 
 	@Before
 	public void initInMock() throws IOException {
 		when(in.readLine()).thenReturn("lala", "lala", "");
+		when(parser.parseTransaction(anyString())).thenReturn(new IntergalacticTransaction() {
+			@Override
+			public void run() {
+			}
+		});
 	}
 
 	@Test

@@ -16,7 +16,7 @@ public class IntergalacticTransactionApplication {
 		}
 
 		TransactionContext context = new TransactionContext(new BufferedReader(new InputStreamReader(in)),
-				new BufferedWriter(new OutputStreamWriter(out)));
+				new PrintWriter(new BufferedWriter(new OutputStreamWriter(out))));
 		TransactionParser parser = new TransactionParser(context);
 		context.processInput(parser);
 	}
