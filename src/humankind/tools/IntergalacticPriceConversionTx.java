@@ -26,6 +26,8 @@ public class IntergalacticPriceConversionTx implements IntergalacticTransaction 
 			context.getOutputWriter().println(outputBuilder.append("is ").append(result).toString());
 		} catch (ParseException e) {
 			context.getOutputWriter().println("I have no idea what you are talking about");
+		} finally {
+			context.getOutputWriter().flush();
 		}
 	}
 }

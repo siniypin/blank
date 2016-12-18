@@ -1,5 +1,7 @@
 package humankind.tools;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 
 public class PricePerUnitDefinitionTx implements IntergalacticTransaction {
@@ -10,7 +12,7 @@ public class PricePerUnitDefinitionTx implements IntergalacticTransaction {
 	public PricePerUnitDefinitionTx(String[] txParts, TransactionContext context) {
 		this.txParts = txParts;
 		this.context = context;
-		
+
 	}
 
 	@Override
@@ -24,9 +26,13 @@ public class PricePerUnitDefinitionTx implements IntergalacticTransaction {
 		int numberOfUnits;
 		try {
 			numberOfUnits = romanNumberConverter.convert(romanLiteralBuilder.toString());
-			context.getPricesPerUnit().put(txParts[i], Integer.parseInt(txParts[i + 2]) / numberOfUnits);
+			context.getPricesPerUnit().put(txParts[i],
+					new BigDecimal(Double.toString(Integer.parseInt(txParts[i + 2]) / (double) numberOfUnits))
+							.setScale(2, RoundingMode.HALF_EVEN));
 		} catch (ParseException e) {
-			
+			context.getOutputWriter().println("I have no idea what you are talking about");
+		} finally {
+			context.getOutputWriter().flush();
 		}
 	}
 }

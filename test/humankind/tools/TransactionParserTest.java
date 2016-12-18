@@ -1,10 +1,14 @@
 package humankind.tools;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -53,11 +57,9 @@ public class TransactionParserTest {
 
 		// act
 		IntergalacticTransaction tx = sut.parseTransaction("glob glob Silver is 34 Credits");
-		tx.run();
 
 		// assert
 		Assert.assertThat(tx, is(instanceOf(PricePerUnitDefinitionTx.class)));
-		Assert.assertEquals(Integer.valueOf(34 / 2), sut.getParserContext().getPricesPerUnit().get("Silver"));
 	}
 
 	@Test
@@ -71,5 +73,18 @@ public class TransactionParserTest {
 
 		// assert
 		Assert.assertThat(tx, is(instanceOf(IntergalacticPriceConversionTx.class)));
+	}
+	
+	@Test
+	public void shouldParsePriceRequestTx() {
+		// arrange
+		TransactionContext context = new TransactionContext(in, out);
+		TransactionParser sut = new TransactionParser(context);
+
+		// act
+		IntergalacticTransaction tx = sut.parseTransaction("how many Credits is glob prok Silver ?");
+
+		// assert
+		Assert.assertThat(tx, is(instanceOf(IntergalacticUnitsPriceRequestTx.class)));
 	}
 }
