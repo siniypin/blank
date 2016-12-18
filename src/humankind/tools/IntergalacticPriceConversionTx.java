@@ -4,16 +4,14 @@ import java.text.ParseException;
 
 public class IntergalacticPriceConversionTx implements IntergalacticTransaction {
 	private String[] txLines;
-	private TransactionContext context;
 	private RomanNumberConverter romanNumberConverter = new RomanNumberConverter();
 
-	public IntergalacticPriceConversionTx(String[] txLines, TransactionContext transactionContext) {
+	public IntergalacticPriceConversionTx(String[] txLines) {
 		this.txLines = txLines;
-		this.context = transactionContext;
 	}
 
 	@Override
-	public void run() {
+	public void run(TransactionContext context) {
 		StringBuffer outputBuilder = new StringBuffer();
 		StringBuffer romanLiteralBuilder = new StringBuffer();
 		for (int i = 3; i < txLines.length - 1; i++) {

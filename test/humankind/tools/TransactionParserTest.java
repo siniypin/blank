@@ -23,29 +23,31 @@ public class TransactionParserTest {
 	@Test
 	public void shouldParseVocabularyTx() {
 		// arrange
-		TransactionParser sut = new TransactionParser(new TransactionContext(in, out));
+		TransactionContext context = new TransactionContext(in, out);
+		TransactionParser sut = new TransactionParser();
 
 		// act
-		IntergalacticTransaction tx = sut.parseTransaction("glob is I");
-		tx.run();
+		IntergalacticTransaction tx = sut.parseTransaction("glob is I", context);
+		tx.run(context);
 
 		// assert
 		Assert.assertThat(tx, isA(IntergalacticTransaction.class));
-		Assert.assertEquals("I", sut.getParserContext().getVocabulary().get("glob"));
+		Assert.assertEquals("I", context.getVocabulary().get("glob"));
 	}
 
 	@Test
 	public void shouldParseVocabularyTx2() {
 		// arrange
-		TransactionParser sut = new TransactionParser(new TransactionContext(in, out));
+		TransactionContext context = new TransactionContext(in, out);
+		TransactionParser sut = new TransactionParser();
 
 		// act
-		IntergalacticTransaction tx = sut.parseTransaction("prok is V");
-		tx.run();
+		IntergalacticTransaction tx = sut.parseTransaction("prok is V", context);
+		tx.run(context);
 
 		// assert
 		Assert.assertThat(tx, isA(IntergalacticTransaction.class));
-		Assert.assertEquals("V", sut.getParserContext().getVocabulary().get("prok"));
+		Assert.assertEquals("V", context.getVocabulary().get("prok"));
 	}
 
 	@Test
@@ -53,10 +55,10 @@ public class TransactionParserTest {
 		// arrange
 		TransactionContext context = new TransactionContext(in, out);
 		context.getVocabulary().put("glob", "I");
-		TransactionParser sut = new TransactionParser(context);
+		TransactionParser sut = new TransactionParser();
 
 		// act
-		IntergalacticTransaction tx = sut.parseTransaction("glob glob Silver is 34 Credits");
+		IntergalacticTransaction tx = sut.parseTransaction("glob glob Silver is 34 Credits", context);
 
 		// assert
 		Assert.assertThat(tx, is(instanceOf(PricePerUnitDefinitionTx.class)));
@@ -66,10 +68,10 @@ public class TransactionParserTest {
 	public void shouldParsePriceConversionTx() {
 		// arrange
 		TransactionContext context = new TransactionContext(in, out);
-		TransactionParser sut = new TransactionParser(context);
+		TransactionParser sut = new TransactionParser();
 
 		// act
-		IntergalacticTransaction tx = sut.parseTransaction("how much is pish tegj glob glob ?");
+		IntergalacticTransaction tx = sut.parseTransaction("how much is pish tegj glob glob ?", context);
 
 		// assert
 		Assert.assertThat(tx, is(instanceOf(IntergalacticPriceConversionTx.class)));
@@ -79,10 +81,10 @@ public class TransactionParserTest {
 	public void shouldParsePriceRequestTx() {
 		// arrange
 		TransactionContext context = new TransactionContext(in, out);
-		TransactionParser sut = new TransactionParser(context);
+		TransactionParser sut = new TransactionParser();
 
 		// act
-		IntergalacticTransaction tx = sut.parseTransaction("how many Credits is glob prok Silver ?");
+		IntergalacticTransaction tx = sut.parseTransaction("how many Credits is glob prok Silver ?", context);
 
 		// assert
 		Assert.assertThat(tx, is(instanceOf(IntergalacticUnitsPriceRequestTx.class)));

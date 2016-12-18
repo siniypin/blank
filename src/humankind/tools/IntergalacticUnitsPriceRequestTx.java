@@ -6,19 +6,17 @@ import java.text.ParseException;
 
 public class IntergalacticUnitsPriceRequestTx implements IntergalacticTransaction {
 	private String[] txParts;
-	private TransactionContext context;
 	private RomanNumberConverter romanNumberConverter = new RomanNumberConverter();
 
-	public IntergalacticUnitsPriceRequestTx(String[] txParts, TransactionContext context) {
+	public IntergalacticUnitsPriceRequestTx(String[] txParts) {
 		this.txParts = txParts;
-		this.context = context;
 	}
 
 	@Override
-	public void run() {
+	public void run(TransactionContext context) {
 		try {
 			String goods = txParts[txParts.length - 2];
-			throwUnknownGoodsError(goods);
+			throwUnknownGoodsError(goods, context);
 			BigDecimal pricePerUnit = context.getPricesPerUnit().get(goods);
 
 			StringBuffer outputBuilder = new StringBuffer();
@@ -40,7 +38,7 @@ public class IntergalacticUnitsPriceRequestTx implements IntergalacticTransactio
 		}
 	}
 
-	private void throwUnknownGoodsError(String goods) throws ParseException {
+	private void throwUnknownGoodsError(String goods, TransactionContext context) throws ParseException {
 		if (!context.getPricesPerUnit().containsKey(goods)) {
 			throw new ParseException(goods, 0);
 		}

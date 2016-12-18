@@ -1,33 +1,23 @@
 package humankind.tools;
 
 public class TransactionParser {
-	private TransactionContext context;
-
-	public TransactionParser(TransactionContext parserContext) {
-		this.context = parserContext;
-	}
-
-	public TransactionContext getParserContext() {
-		return context;
-	}
-
-	public IntergalacticTransaction parseTransaction(String txString) {
+	public IntergalacticTransaction parseTransaction(String txString, TransactionContext context) {
 		String[] parts = txString.split(" ");
 		if (parts.length == 3) {
 			return new IntergalacticTransaction() {
 				@Override
-				public void run() {
+				public void run(TransactionContext context) {
 					context.getVocabulary().put(parts[0], parts[2]);
 				}
 			};
 		} else if (parts[parts.length - 1].equals("?")) {
 			return parseQuestions(parts);
 		} else if (parts[parts.length - 1].equals("Credits")) {
-			return new PricePerUnitDefinitionTx(parts, context);
+			return new PricePerUnitDefinitionTx(parts);
 		} else {
 			return new IntergalacticTransaction() {
 				@Override
-				public void run() {
+				public void run(TransactionContext context) {
 					context.getOutputWriter().println("Don't know how to parse this transaction. Was that Scottish?");
 				}
 			};
@@ -35,7 +25,7 @@ public class TransactionParser {
 	}
 
 	private IntergalacticTransaction parseQuestions(String[] parts) {
-		return parts[1].equals("much") ? new IntergalacticPriceConversionTx(parts, context)
-				: new IntergalacticUnitsPriceRequestTx(parts, context);
+		return parts[1].equals("much") ? new IntergalacticPriceConversionTx(parts)
+				: new IntergalacticUnitsPriceRequestTx(parts);
 	}
 }

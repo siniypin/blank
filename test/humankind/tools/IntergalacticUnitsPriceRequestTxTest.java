@@ -59,10 +59,10 @@ public class IntergalacticUnitsPriceRequestTxTest {
 	@Test
 	public void shouldAnswerCorrectly() {
 		// arrange
-		IntergalacticUnitsPriceRequestTx sut = new IntergalacticUnitsPriceRequestTx(txLine.split(" "), context);
+		IntergalacticUnitsPriceRequestTx sut = new IntergalacticUnitsPriceRequestTx(txLine.split(" "));
 
 		// act
-		sut.run();
+		sut.run(context);
 
 		// assert
 		verify(out).println(expectedOutput);

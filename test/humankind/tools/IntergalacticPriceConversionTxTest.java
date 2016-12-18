@@ -50,10 +50,10 @@ public class IntergalacticPriceConversionTxTest {
 	@Test
 	public void shouldAnswerCorrectly() {
 		// arrange
-		IntergalacticPriceConversionTx sut = new IntergalacticPriceConversionTx(txLine.split(" "), context);
+		IntergalacticPriceConversionTx sut = new IntergalacticPriceConversionTx(txLine.split(" "));
 
 		// act
-		sut.run();
+		sut.run(context);
 
 		// assert
 		verify(out).println(expectedOutput);

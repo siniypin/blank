@@ -5,18 +5,15 @@ import java.math.RoundingMode;
 import java.text.ParseException;
 
 public class PricePerUnitDefinitionTx implements IntergalacticTransaction {
-	private TransactionContext context;
 	private String[] txParts;
 	private RomanNumberConverter romanNumberConverter = new RomanNumberConverter();
 
-	public PricePerUnitDefinitionTx(String[] txParts, TransactionContext context) {
+	public PricePerUnitDefinitionTx(String[] txParts) {
 		this.txParts = txParts;
-		this.context = context;
-
 	}
 
 	@Override
-	public void run() {
+	public void run(TransactionContext context) {
 		StringBuffer romanLiteralBuilder = new StringBuffer();
 		int i = 0;
 		while (txParts[i].charAt(0) > Character.valueOf('Z')) {

@@ -22,11 +22,12 @@ public class TransactionContextTest {
 	@Before
 	public void initInMock() throws IOException {
 		when(in.readLine()).thenReturn("lala", "lala", "");
-		when(parser.parseTransaction(anyString())).thenReturn(new IntergalacticTransaction() {
-			@Override
-			public void run() {
-			}
-		});
+		when(parser.parseTransaction(anyString(), isA(TransactionContext.class)))
+				.thenReturn(new IntergalacticTransaction() {
+					@Override
+					public void run(TransactionContext context) {
+					}
+				});
 	}
 
 	@Test

@@ -33,11 +33,10 @@ public class PricePerUnitDefinitionTxTest {
 	@Test
 	public void shouldAnswerCorrectly() {
 		// arrange
-		PricePerUnitDefinitionTx sut = new PricePerUnitDefinitionTx("glob glob Silver is 34 Credits".split(" "),
-				context);
+		PricePerUnitDefinitionTx sut = new PricePerUnitDefinitionTx("glob glob Silver is 34 Credits".split(" "));
 
 		// act
-		sut.run();
+		sut.run(context);
 
 		// assert
 		Assert.assertTrue(new BigDecimal("17.0").compareTo(context.getPricesPerUnit().get("Silver")) == 0);

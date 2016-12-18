@@ -19,8 +19,8 @@ public class TransactionContext {
 		try {
 			String line = inputReader.readLine();
 			while (line != null && !line.isEmpty()) {
-				IntergalacticTransaction tx = parser.parseTransaction(line);
-				tx.run();
+				IntergalacticTransaction tx = parser.parseTransaction(line, this);
+				tx.run(this);
 				line = inputReader.readLine();
 			}
 		} catch (IOException ex) {
